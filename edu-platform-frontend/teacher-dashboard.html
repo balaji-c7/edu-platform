@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teacher Dashboard | Edu Platform</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Welcome, <span id="userName">Teacher</span> 👩‍🏫</h1>
+      <button id="logoutBtn">Logout</button>
+    </header>
+
+    <main>
+      <!-- Create Classroom -->
+      <section class="dashboard-section">
+        <h2>Create New Classroom</h2>
+        <form id="createClassroomForm">
+          <input
+            type="text"
+            id="classroomName"
+            placeholder="Classroom Name"
+            required
+          />
+          <input
+            type="date"
+            id="classroomExpiry"
+            placeholder="Expires At (Optional)"
+          />
+          <button type="submit">Create Classroom</button>
+        </form>
+        <p id="createClassMsg" class="msg"></p>
+      </section>
+
+      <!-- Add Student to Classroom -->
+      <section class="dashboard-section">
+        <h2>Add Student to Classroom</h2>
+        <form id="addStudentForm">
+          <input
+            type="text"
+            id="classroomId"
+            placeholder="Classroom ID"
+            required
+          />
+          <input type="text" id="studentId" placeholder="Student ID" required />
+          <button type="submit">Add Student</button>
+        </form>
+        <p id="addStudentMsg" class="msg"></p>
+      </section>
+
+      <!-- Upload Resource -->
+      <section class="dashboard-section">
+        <h2>Upload Resource</h2>
+        <form id="uploadResourceForm">
+          <input type="text" id="resourceTitle" placeholder="Title" required />
+          <input type="text" id="resourceUrl" placeholder="URL" required />
+          <input
+            type="text"
+            id="resourceClassroomId"
+            placeholder="Classroom ID"
+            required
+          />
+          <textarea
+            id="resourceDescription"
+            placeholder="Description (Optional)"
+          ></textarea>
+          <button type="submit">Upload Resource</button>
+        </form>
+        <p id="uploadResourceMsg" class="msg"></p>
+      </section>
+
+      <!-- Upload Assignment -->
+      <section class="dashboard-section">
+        <h2>Upload Assignment</h2>
+        <form id="uploadAssignmentForm" enctype="multipart/form-data">
+          <input
+            type="text"
+            id="assignmentTitle"
+            placeholder="Title"
+            required
+          />
+          <textarea
+            id="assignmentDescription"
+            placeholder="Description (Optional)"
+          ></textarea>
+          <input type="date" id="assignmentDueDate" required />
+          <input
+            type="text"
+            id="assignmentClassroomId"
+            placeholder="Classroom ID"
+            required
+          />
+          <input type="file" id="assignmentFile" required />
+          <button type="submit">Upload Assignment</button>
+        </form>
+        <p id="uploadAssignmentMsg" class="msg"></p>
+      </section>
+    </main>
+
+    <script src="js/teacher-dashboard.js"></script>
+  </body>
+</html>

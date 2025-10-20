@@ -1,0 +1,9 @@
+backend/
+├── controllers/        # Business logic
+├── models/             # Mongoose schemas
+├── routes/             # Express routes (auth, classroom, forum, etc.)
+├── middleware/         # Auth, validation
+├── config/             # DB, env configs
+├── utils/              # Helpers (email, token, etc.)
+├── server.js           # App entry point
+├── .env                # Secrets/configs

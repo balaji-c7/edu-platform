@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forum</title>
+    <link rel="stylesheet" href="/edu-platform-frontend/css/style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <h1>Community Forum</h1>
+      <nav>
+        <a href="/dashboard.html">Dashboard</a>
+        <a href="/forum.html" class="active">Forum</a>
+        <a href="/logout">Logout</a>
+      </nav>
+    </header>
+
+    <main class="forum-container">
+      <section id="forum-posts" class="forum-posts">
+        <h2>Recent Discussions</h2>
+        <div id="postsList" class="posts-list"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© 2025 EduConnect | All Rights Reserved</p>
+    </footer>
+
+    <script>
+      async function loadForumPosts() {
+        try {
+          const response = await fetch("/api/forum");
+          const posts = await response.json();
+          const postsList = document.getElementById("postsList");
+
+          postsList.innerHTML = "";
+
+          if (posts.length === 0) {
+            postsList.innerHTML =
+              "<p>No discussions yet. Be the first to post!</p>";
+            return;
+          }
+
+          posts.forEach((post) => {
+            const postCard = document.createElement("div");
+            postCard.className = "post-card";
+
+            postCard.innerHTML = `
+            <h3 class="post-title">${post.title}</h3>
+            <p class="post-meta">By <strong>${
+              post.author
+            }</strong> • ${new Date(post.date).toLocaleDateString()}</p>
+            <p class="post-content">${post.content}</p>
+            <p class="post-replies">💬 ${post.replies} replies</p>
+          `;
+
+            postsList.appendChild(postCard);
+          });
+        } catch (error) {
+          console.error("Error loading forum data:", error);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", loadForumPosts);
+    </script>
+  </body>
+</html>
