@@ -1,3 +1,5 @@
+<!--forum.html-->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,9 +12,8 @@
     <header class="navbar">
       <h1>Community Forum</h1>
       <nav>
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/forum.html" class="active">Forum</a>
-        <a href="/logout">Logout</a>
+        <a href="./dashboard.html">Dashboard</a>
+        <button onclick="logout()">Logout</button>
       </nav>
     </header>
 
@@ -26,7 +27,6 @@
     <footer class="footer">
       <p>© 2025 EduConnect | All Rights Reserved</p>
     </footer>
-
     <script>
       async function loadForumPosts() {
         try {
@@ -64,5 +64,6 @@
 
       document.addEventListener("DOMContentLoaded", loadForumPosts);
     </script>
+    <script src="js/script.js"></script>
   </body>
 </html>

@@ -7,7 +7,7 @@ const {
   createClassroom,
   getClassroomById,
   getAllClassrooms,
-  addStudentToClassroom, 
+  addStudentToClassroom,
 } = require("../controllers/classroomController");
 const verifyToken = require("../middleware/verifyToken");
 const checkRole = require("../middleware/roleCheck");

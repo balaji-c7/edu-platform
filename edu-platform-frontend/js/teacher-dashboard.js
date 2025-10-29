@@ -1,3 +1,5 @@
+// ---------------- teacher-dashboard.js ----------------
+
 const apiBase = "http://localhost:5000/api";
 
 document.addEventListener("DOMContentLoaded", () => {
