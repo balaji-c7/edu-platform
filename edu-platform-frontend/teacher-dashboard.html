@@ -41,11 +41,16 @@
         <form id="addStudentForm">
           <input
             type="text"
-            id="classroomId"
-            placeholder="Classroom ID"
+            id="classroomName"
+            placeholder="Classroom Name"
             required
           />
-          <input type="text" id="studentId" placeholder="Student ID" required />
+          <input
+            type="email"
+            id="studentEmail"
+            placeholder="Student Email"
+            required
+          />
           <button type="submit">Add Student</button>
         </form>
         <p id="addStudentMsg" class="msg"></p>

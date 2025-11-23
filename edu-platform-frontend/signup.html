@@ -1,3 +1,5 @@
+<!-- signup.html -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -33,41 +35,6 @@
       <p>Already have an account? <a href="login.html">Login</a></p>
     </div>
 
-    <script>
-      const signupForm = document.getElementById("signupForm");
-
-      signupForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const name = document.getElementById("signupName").value;
-        const email = document.getElementById("signupEmail").value;
-        const password = document.getElementById("signupPassword").value;
-        const role = document.getElementById("signupRole").value;
-
-        try {
-          const response = await fetch(
-            "http://localhost:5000/api/auth/register",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ name, email, password, role }),
-            }
-          );
-
-          const data = await response.json();
-          if (response.ok) {
-            alert("Signup successful! Please login.");
-            window.location.href = "login.html";
-          } else {
-            alert(data.message || "Signup failed");
-          }
-        } catch (error) {
-          console.error("Signup error:", error);
-          alert("An error occurred during signup.");
-        }
-      });
-    </script>
+    <script src="js/script.js"></script>
   </body>
 </html>

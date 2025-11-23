@@ -1,19 +1,25 @@
-// classroomController 
+// controllers/classroomController.js
 const Classroom = require("../models/classroom");
 const User = require("../models/User");
 
-// ✅ Add a student to classroom
+// ✅ Add a student to classroom using classroomName + studentEmail
 const addStudentToClassroom = async (req, res) => {
   try {
-    const { classroomId, studentId } = req.body;
+    const { classroomName, studentEmail } = req.body;
 
-    // check classroom exists
-    const classroom = await Classroom.findById(classroomId);
+    if (!classroomName || !studentEmail) {
+      return res
+        .status(400)
+        .json({ message: "classroomName and studentEmail are required" });
+    }
+
+    // 1️⃣ Find classroom by name
+    const classroom = await Classroom.findOne({ name: classroomName });
     if (!classroom) {
       return res.status(404).json({ message: "Classroom not found" });
     }
 
-    // only teacher/admin (creator) can add
+    // 2️⃣ Only teacher who created OR admin can add
     if (
       classroom.createdBy.toString() !== req.user._id.toString() &&
       req.user.role !== "admin"
@@ -23,23 +29,37 @@ const addStudentToClassroom = async (req, res) => {
         .json({ message: "Not allowed to add members to this classroom" });
     }
 
-    // check if already a member
-    if (classroom.members.includes(studentId)) {
+    // 3️⃣ Find student by email
+    const student = await User.findOne({ email: studentEmail });
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    // 4️⃣ Check if already a member
+    const alreadyMember = classroom.members.some(
+      (m) => m.toString() === student._id.toString()
+    );
+    if (alreadyMember) {
       return res.status(400).json({ message: "Student already in classroom" });
     }
 
-    // add student
-    classroom.members.push(studentId);
+    // 5️⃣ Add student
+    classroom.members.push(student._id);
     await classroom.save();
 
-    res.status(200).json({ message: "Student added", classroom });
+    res.status(200).json({
+      message: "Student added",
+      classroomId: classroom._id,
+      classroomName: classroom.name,
+      student: { id: student._id, name: student.name, email: student.email },
+    });
   } catch (error) {
+    console.error("Error adding student:", error);
     res
       .status(500)
       .json({ message: "Failed to add student", error: error.message });
   }
 };
-
 
 // ✅ Create a new classroom
 const createClassroom = async (req, res) => {
@@ -99,7 +119,7 @@ const getClassroomById = async (req, res) => {
   }
 };
 
-// ✅ Get all classrooms
+// ✅ Get all classrooms (for listing on classrooms page)
 const getAllClassrooms = async (req, res) => {
   try {
     const classrooms = await Classroom.find()
@@ -116,10 +136,31 @@ const getAllClassrooms = async (req, res) => {
   }
 };
 
+// ✅ Get only classrooms where current user is a member
+const getMyClassrooms = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const classrooms = await Classroom.find({
+      members: userId,
+    })
+      .populate("createdBy", "name email")
+      .populate("members", "name email");
+
+    res.status(200).json(classrooms);
+  } catch (error) {
+    console.error("Error fetching user classrooms:", error);
+    res.status(500).json({
+      message: "Failed to fetch your classrooms",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createClassroom,
   getClassroomById,
   getAllClassrooms,
+  getMyClassrooms,
   addStudentToClassroom,
 };
-

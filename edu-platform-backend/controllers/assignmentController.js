@@ -1,7 +1,7 @@
 // controllers/assignmentController.js
 const Assignment = require("../models/Assignment");
 const Submission = require("../models/Submission");
-const Classroom = require("../models/classroom"); // ✅ added
+const Classroom = require("../models/classroom");
 
 // Teacher uploads assignment
 const createAssignment = async (req, res) => {
@@ -17,7 +17,7 @@ const createAssignment = async (req, res) => {
       return res.status(404).json({ message: "Classroom not found" });
     }
 
-    // s check teacher/admin is creator of that class
+    // ✅ check teacher/admin is creator of that class
     if (classroom.createdBy.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         message: "You are not allowed to add assignments to this class",
@@ -64,7 +64,9 @@ const submitAssignment = async (req, res) => {
 
     // ✅ check student is in the class
     const classroom = await Classroom.findById(assignment.classroomId);
-    if (!classroom.members.includes(req.user._id)) {
+    if (
+      !classroom.members.some((m) => m.toString() === req.user._id.toString())
+    ) {
       return res
         .status(403)
         .json({ message: "You are not a member of this classroom" });

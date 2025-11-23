@@ -1,13 +1,13 @@
-// ---------------- teacher-dashboard.js ----------------
+// edu-platform-frontend/js/teacher-dashboard.js
 
-const apiBase = "http://localhost:5000/api";
+const apiBase = "http://192.168.31.141:5000/api";
 
 document.addEventListener("DOMContentLoaded", () => {
   const userNameElement = document.getElementById("userName");
   const logoutBtn = document.getElementById("logoutBtn");
 
   const token = localStorage.getItem("token");
-  const userName = localStorage.getItem("userName") || "Teacher";
+  const userName = localStorage.getItem("name") || "Teacher";
 
   if (!token) {
     alert("Please log in first!");
@@ -19,8 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userName");
+      localStorage.clear();
       window.location.href = "login.html";
     });
   }
@@ -52,9 +51,11 @@ function setupCreateClassroom(token) {
       });
       const data = await res.json();
       msg.textContent = data.message;
-      form.reset();
+      msg.style.color = res.ok ? "green" : "red";
+      if (res.ok) form.reset();
     } catch (err) {
       msg.textContent = "Error creating classroom";
+      msg.style.color = "red";
       console.error(err);
     }
   });
@@ -67,8 +68,8 @@ function setupAddStudent(token) {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const classroomId = document.getElementById("classroomId").value;
-    const studentId = document.getElementById("studentId").value;
+    const classroomName = document.getElementById("classroomName").value;
+    const studentEmail = document.getElementById("studentEmail").value;
 
     try {
       const res = await fetch(`${apiBase}/classroom/add-student`, {
@@ -77,13 +78,16 @@ function setupAddStudent(token) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ classroomId, studentId }),
+        body: JSON.stringify({ classroomName, studentEmail }),
       });
+
       const data = await res.json();
-      msg.textContent = data.message;
-      form.reset();
+      msg.textContent = data.message || "Done";
+      msg.style.color = res.ok ? "green" : "red";
+      if (res.ok) form.reset();
     } catch (err) {
       msg.textContent = "Error adding student";
+      msg.style.color = "red";
       console.error(err);
     }
   });
@@ -112,9 +116,11 @@ function setupUploadResource(token) {
       });
       const data = await res.json();
       msg.textContent = data.message;
-      form.reset();
+      msg.style.color = res.ok ? "green" : "red";
+      if (res.ok) form.reset();
     } catch (err) {
       msg.textContent = "Error uploading resource";
+      msg.style.color = "red";
       console.error(err);
     }
   });
@@ -148,9 +154,11 @@ function setupUploadAssignment(token) {
       });
       const data = await res.json();
       msg.textContent = data.message;
-      form.reset();
+      msg.style.color = res.ok ? "green" : "red";
+      if (res.ok) form.reset();
     } catch (err) {
       msg.textContent = "Error uploading assignment";
+      msg.style.color = "red";
       console.error(err);
     }
   });

@@ -1,18 +1,17 @@
-//routes/resourceRoutes.js
+// routes/resourceRoutes.js
 
 const express = require("express");
 const router = express.Router();
 const checkRole = require("../middleware/roleCheck");
 
-// ✅ Make sure the path and name are correct
 const {
   uploadResource,
   getResources,
+  getResourcesByClassroom,
 } = require("../controllers/resourceController");
 const verifyToken = require("../middleware/verifyToken");
-const Resource = require("../models/Resource");
 
-// ✅ Use it in the route
+// Upload resource (teacher/admin)
 router.post(
   "/upload",
   verifyToken,
@@ -20,6 +19,10 @@ router.post(
   uploadResource
 );
 
+// Get all resources for all classes user belongs to
 router.get("/all", verifyToken, getResources);
+
+// 🔹 Get resources for a specific classroom
+router.get("/classroom/:classroomId", verifyToken, getResourcesByClassroom);
 
 module.exports = router;

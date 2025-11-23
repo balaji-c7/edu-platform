@@ -1,6 +1,6 @@
 // controllers/resourceController.js
 const Resource = require("../models/Resource");
-const Classroom = require("../models/classroom"); // ✅ added
+const Classroom = require("../models/classroom");
 
 const uploadResource = async (req, res) => {
   try {
@@ -39,9 +39,9 @@ const uploadResource = async (req, res) => {
   }
 };
 
+// 🔹 Get all resources for all classrooms the user is in
 const getResources = async (req, res) => {
   try {
-    // Get classrooms this user belongs to
     const userId = req.user._id;
     const userClassrooms = await Classroom.find({ members: userId }).select(
       "_id"
@@ -49,10 +49,9 @@ const getResources = async (req, res) => {
 
     const classroomIds = userClassrooms.map((c) => c._id);
 
-    // Fetch resources that belong to any of those classrooms
     const resources = await Resource.find({
       classroomId: { $in: classroomIds },
-    });
+    }).sort({ createdAt: -1 });
 
     res.status(200).json(resources);
   } catch (err) {
@@ -63,4 +62,37 @@ const getResources = async (req, res) => {
   }
 };
 
-module.exports = { uploadResource, getResources };
+// 🔹 Get resources for a specific classroom (used by class-resources.html)
+const getResourcesByClassroom = async (req, res) => {
+  try {
+    const classroomId = req.params.classroomId;
+    const userId = req.user._id;
+
+    const classroom = await Classroom.findById(classroomId);
+    if (!classroom) {
+      return res.status(404).json({ message: "Classroom not found" });
+    }
+
+    const isMember = classroom.members.some(
+      (m) => m.toString() === userId.toString()
+    );
+    if (!isMember) {
+      return res
+        .status(403)
+        .json({ message: "You are not a member of this classroom" });
+    }
+
+    const resources = await Resource.find({ classroomId }).sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json(resources);
+  } catch (err) {
+    res.status(500).json({
+      message: "Failed to fetch resources for classroom",
+      error: err.message,
+    });
+  }
+};
+
+module.exports = { uploadResource, getResources, getResourcesByClassroom };
