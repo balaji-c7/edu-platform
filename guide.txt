@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 step 1- https://nodejs.org/en/download  fo to this website and download node.js for windows and after downloading finish the installation
 
 step 2- after installation check whether the npm command works by using "npm -v" in command prompt 
@@ -26,4 +27,34 @@ step 13- after installing the prerequisites use command prompt and nacigate into
 
 step 14-after running the backend open monoDB GUI and press connect on the available connection 
 
+=======
+step 1- https://nodejs.org/en/download  fo to this website and download node.js for windows and after downloading finish the installation
+
+step 2- after installation check whether the npm command works by using "npm -v" in command prompt 
+
+step 3- install all the given packages 
+
+step 4- --npm install express mongoose cors dotenv 
+
+step 5- --npm install bcryptjs jsonwebtoken
+
+step 6- --npm install multer 
+
+step 7- --npm install --save-dev nodemon 
+
+step 8- --npm install morgan express-validator
+
+step 9- download mongoDB compass using this website "https://www.mongodb.com/try/download/compass" for windows
+
+step 10-Git clone the repo given
+
+step 11-download and install VSCODE from "https://code.visualstudio.com/download" and install live server extension 
+
+step 12-open the project folder in VSCODE and after navigation to frontend folder open index.html and click on "go live" button on the right side bottom corner
+
+step 13- after installing the prerequisites use command prompt and nacigate into the edu_backend folder and run npx nodemon server.js 
+
+step 14-after running the backend open monoDB GUI and press connect on the available connection 
+
+>>>>>>> 0093a8ab0dc3b629e4c6c63869be3f835a052017
 step 15-Now try to see if all the implemented features works 
